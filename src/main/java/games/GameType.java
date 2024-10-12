@@ -51,6 +51,10 @@ import games.sushigo.*;
 import games.sushigo.gui.SGGUIManager;
 import games.tictactoe.*;
 import games.tictactoe.gui.*;
+import games.totoro.TotoroForwardModel;
+import games.totoro.TotoroGUIManager;
+import games.totoro.TotoroGameState;
+import games.totoro.TotoroParameters;
 import games.uno.*;
 import games.uno.gui.*;
 import games.virus.*;
@@ -200,7 +204,11 @@ public enum GameType {
     ChineseCheckers(2, 6,
             Arrays.asList(Strategy, Abstract),
             Arrays.asList(GridMovement),
-            CCGameState.class, CCForwardModel.class, CCParameters.class, CCGUIManager.class);
+            CCGameState.class, CCForwardModel.class, CCParameters.class, CCGUIManager.class),
+    Totoro(1, 1,
+            null,
+            null,
+            TotoroGameState.class, TotoroForwardModel.class, TotoroParameters.class, PrototypeGUIManager.class);
 
 
     // Core classes where the game is defined
