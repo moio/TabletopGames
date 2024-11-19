@@ -1,0 +1,10 @@
+{
+  "handSize": 4,
+  "offerSize": 4,
+  "operationSize": 3,
+  "operationsToWin": 4,
+
+  "verbose": true,
+  "randomSeed": 0,
+  "recordEventHistory": true
+}
