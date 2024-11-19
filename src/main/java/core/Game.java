@@ -16,25 +16,17 @@ import players.basicMCTS.BasicMCTSPlayer;
 import players.human.ActionController;
 import players.human.HumanConsolePlayer;
 import players.human.HumanGUIPlayer;
-import players.mcts.MCTSPlayer;
-import players.mcts.MCTSPlayer;
-import players.rmhc.RMHCParams;
-import players.rmhc.RMHCPlayer;
-import players.simple.FirstActionPlayer;
-import players.simple.OSLAPlayer;
 import players.simple.RandomPlayer;
 import utilities.Pair;
 import utilities.Utils;
 
-import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import static games.GameType.*;
 
 
 public class Game {
@@ -567,6 +559,10 @@ public class Game {
                 // Can only do 1 action, so do it.
                 action = observedActions.get(0);
                 currentPlayer.registerUpdatedObservation(observation);
+
+                if (debug)
+                    System.out.printf("Game: %2d Tick: %3d\t%s%n", gameState.getGameID(), getTick(), action.getString(gameState));
+
             } else {
                 // Get action from player, and time it
                 s = System.nanoTime();
@@ -592,6 +588,8 @@ public class Game {
             listeners.forEach(l -> l.onEvent(Event.createEvent(Event.GameEvent.ACTION_CHOSEN, gameState, finalAction, activePlayer)));
 
         } else {
+            if (debug)
+                System.out.printf("Game: %2d Tick: %3d\t%s%n", gameState.getGameID(), getTick(), action);
             currentPlayer.registerUpdatedObservation(observation);
         }
 
