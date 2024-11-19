@@ -103,14 +103,15 @@ public class TotoroForwardModel extends StandardForwardModel {
         return ids.stream().map(i -> d.contains((TotoroCard) s.getComponentById(i)) ? 1 : 0).reduce(0, Integer::sum);
     }
 
-    public static List<List<TotoroCard>> combinations(List<TotoroCard> inputSet, int k) {
-        List<List<TotoroCard>> results = new ArrayList<>();
-        combinationsInternal(inputSet, k, results, new ArrayList<>(), 0);
+
+    public static <T> List<List<T>> combinations(List<T> inputSet, int k) {
+        List<List<T>> results = new ArrayList<>();
+        combinationsInternal(inputSet, k, results, new ArrayList<T>(), 0);
         return results;
     }
-    
-    private static void combinationsInternal(
-            List<TotoroCard> inputSet, int k, List<List<TotoroCard>> results, ArrayList<TotoroCard> accumulator, int index) {
+
+    private static <T> void combinationsInternal(
+            List<T> inputSet, int k, List<List<T>> results, ArrayList<T> accumulator, int index) {
         int needToAccumulate = k - accumulator.size();
         int canAcculumate = inputSet.size() - index;
 
