@@ -1,0 +1,12 @@
+{
+  "game": "Bamboo",
+  "gameParams": "json/experiments/bamboo-params.json",
+  "nPlayers": 2,
+  "verbose": true,
+  "playerDirectory" : "json/players/gameSpecific/Bamboo/",
+
+  "matchups" : 5,
+  "seed": 0,
+
+  "listener": "json/experiments/bamboo-metrics.json"
+}

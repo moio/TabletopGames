@@ -1,0 +1,13 @@
+{
+  "numberHandSize": 3,
+  "operatorHandSize": 3,
+  "objectiveSize": 1,
+  "numberCopies": 5,
+  "minNumberValue": 1,
+  "maxNumberValue": 9,
+  "operatorCopies": 10,
+
+  "verbose": true,
+  "randomSeed": 0,
+  "recordEventHistory": true
+}

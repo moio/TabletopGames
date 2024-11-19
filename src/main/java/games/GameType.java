@@ -2,6 +2,10 @@ package games;
 
 import core.*;
 import core.rules.AbstractRuleBasedForwardModel;
+import games.bamboo.BambooForwardModel;
+import games.bamboo.BambooGUIManager;
+import games.bamboo.BambooGameState;
+import games.bamboo.BambooParameters;
 import games.battlelore.*;
 import games.battlelore.gui.BattleloreGUI;
 import games.blackjack.*;
@@ -208,7 +212,12 @@ public enum GameType {
     Totoro(1, 1,
             null,
             null,
-            TotoroGameState.class, TotoroForwardModel.class, TotoroParameters.class, PrototypeGUIManager.class);
+            TotoroGameState.class, TotoroForwardModel.class, TotoroParameters.class, PrototypeGUIManager.class),
+    Bamboo(2, 5,
+            null,
+            null,
+            BambooGameState.class, BambooForwardModel.class, BambooParameters.class, BambooGUIManager.class);
+
 
 
     // Core classes where the game is defined
