@@ -651,6 +651,12 @@ public class Game {
         for (AbstractPlayer player : players) {
             player.finalizePlayer(gameState.copy(player.getPlayerID()));
         }
+
+        if (debug) {
+            System.out.println("History of the Match");
+            gameState.getHistory().stream().forEach(h -> System.out.println("Player " + h.a + " - " + "Action " + h.b));
+            System.out.println("End of History of the Match");
+        }
     }
 
     /**
