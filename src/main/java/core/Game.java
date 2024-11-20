@@ -5,6 +5,8 @@ import core.actions.DoNothing;
 import core.interfaces.IExtendedSequence;
 import core.interfaces.IPrintable;
 import core.turnorders.ReactiveTurnOrder;
+import evaluation.RunArg;
+import evaluation.RunGames;
 import evaluation.listeners.IGameListener;
 import evaluation.metrics.Event;
 import evaluation.summarisers.TAGNumericStatSummary;
@@ -76,6 +78,7 @@ public class Game {
         this.gameType = type;
         this.gameState = gameState;
         this.forwardModel = realModel;
+        this.debug = (boolean) RunGames.config.getOrDefault(RunArg.debug, this.debug);
         reset(players);
     }
 
@@ -90,6 +93,7 @@ public class Game {
         this.gameType = type;
         this.forwardModel = model;
         this.gameState = gameState;
+        this.debug = (boolean) RunGames.config.getOrDefault(RunArg.debug, this.debug);
         reset(Collections.emptyList(), gameState.gameParameters.randomSeed);
     }
 
