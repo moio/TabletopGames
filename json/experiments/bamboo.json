@@ -4,9 +4,8 @@
   "nPlayers": 2,
   "verbose": true,
   "playerDirectory" : "json/players/gameSpecific/Bamboo/",
-
   "matchups" : 5,
   "seed": 0,
-
-  "listener": "json/experiments/bamboo-metrics.json"
+  "listener": "metrics/bamboo.json",
+  "destDir" : "metrics/out/bamboo"
 }
