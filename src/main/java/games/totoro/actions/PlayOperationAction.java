@@ -9,6 +9,7 @@ import core.components.Deck;
 import games.totoro.TotoroGameState;
 import games.totoro.TotoroParameters;
 import games.totoro.components.TotoroCard;
+import games.totoro.metrics.TotoroMetrics;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +56,7 @@ public class PlayOperationAction extends AbstractAction {
             s.hand.remove(c);
             s.offer.remove(c);
             operation.add(c);
+            s.logEvent(TotoroMetrics.TotoroEvent.CardPlayed, c.toString());
         });
         s.operations.add(operation);
 
@@ -97,7 +99,7 @@ public class PlayOperationAction extends AbstractAction {
 
     @Override
     public String toString() {
-        return "PlayOperation{values=" + this.strings.toString() + ", ids="+this.operandIDs+"}";
+        return "Play(" + this.strings.toString()+")";
     }
 
     /**

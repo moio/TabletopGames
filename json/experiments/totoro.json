@@ -5,7 +5,7 @@
   "verbose": true,
   "playerDirectory" : "json/players/gameSpecific/Totoro/mcts.json",
 
-  "matchups" : 1,
+  "matchups" : 10,
   "seed": 0,
 
   "listener": "json/experiments/totoro-metrics.json"
