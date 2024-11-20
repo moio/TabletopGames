@@ -142,6 +142,11 @@ public class BambooGameState extends AbstractGameState {
         return copy;
     }
 
+    public int getNextPlayer(int fromPlayerId) {
+        // Es: getNPlayers = 2 ; playerIds = [0,1] ; fromPlayerId = 0 ; nextPlayerId = 1
+        return fromPlayerId + 1 < getNPlayers() ? fromPlayerId + 1 : 0;
+    }
+
     /**
      * @param playerId - player observing the state.
      * @return a score for the given player approximating how well they are doing (e.g. how close they are to winning
