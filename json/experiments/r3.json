@@ -1,0 +1,14 @@
+{
+  "game": "R3",
+  "gameParams": "json/experiments/r3-params.json",
+  "nPlayers": 2,
+  "verbose": true,
+  "recordEventHistory": true,
+  "playerDirectory" : "json/players/gameSpecific/R3/",
+
+  "matchups" : 3,
+  "seed": 0,
+  "debug": true,
+
+  "listener": "json/experiments/r3-metrics.json"
+}

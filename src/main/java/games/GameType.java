@@ -41,6 +41,10 @@ import games.pandemic.*;
 import games.pandemic.gui.PandemicGUIManager;
 import games.puertorico.*;
 import games.puertorico.gui.PuertoRicoGUI;
+import games.r3.R3ForwardModel;
+import games.r3.R3GUIManager;
+import games.r3.R3GameState;
+import games.r3.R3Parameters;
 import games.resistance.ResForwardModel;
 import games.resistance.ResGameState;
 import games.resistance.ResParameters;
@@ -216,7 +220,11 @@ public enum GameType {
     Bamboo(2, 5,
             null,
             null,
-            BambooGameState.class, BambooForwardModel.class, BambooParameters.class, BambooGUIManager.class);
+            BambooGameState.class, BambooForwardModel.class, BambooParameters.class, BambooGUIManager.class),
+    R3(2, 2,
+                   null,
+                   null,
+           R3GameState.class, R3ForwardModel.class, R3Parameters.class, R3GUIManager.class);
 
 
 

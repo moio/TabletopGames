@@ -1,0 +1,4 @@
+{
+  "class" : "players.simple.FirstActionPlayer",
+  "randomSeed": 0
+}
