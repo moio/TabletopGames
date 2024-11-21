@@ -11,6 +11,7 @@
       {"class": "evaluation.metrics.GameMetrics$OrdinalPosition" },
       {"class": "evaluation.metrics.GameMetrics$PlayerType" },
       {"class": "evaluation.metrics.GameMetrics$Winner" },
-      {"class": "games.totoro.metrics.TotoroMetrics$CardPlayedCount" }
+      {"class": "games.totoro.metrics.TotoroMetrics$CardPlayedCount" },
+      {"class": "evaluation.metrics.GameMetrics$Actions" }
     ]]
 }
