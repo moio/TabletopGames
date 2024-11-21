@@ -40,9 +40,6 @@ public class TotoroParameters extends TunableParameters {
         add(new TotoroCard(10));
         add(new TotoroCard(11));
         add(new TotoroCard(12));
-        add(new TotoroCard(4, 1));
-        add(new TotoroCard(7, 1));
-        add(new TotoroCard(10, 1));
     }};
 
     public TotoroParameters(){
