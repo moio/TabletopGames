@@ -3,10 +3,11 @@
   "gameParams": "json/experiments/totoro-params.json",
   "nPlayers": 1,
   "verbose": true,
-  "playerDirectory" : "json/players/gameSpecific/Totoro/mcts.json",
+  "playerDirectory" : "json/players/gameSpecific/Totoro/",
 
-  "matchups" : 10,
+  "matchups" : 300,
   "seed": 0,
+  "debug": false,
 
   "listener": "json/experiments/totoro-metrics.json"
 }
