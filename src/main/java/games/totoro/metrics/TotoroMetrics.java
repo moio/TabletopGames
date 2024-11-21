@@ -6,6 +6,7 @@ import evaluation.listeners.MetricsGameListener;
 import evaluation.metrics.AbstractMetric;
 import evaluation.metrics.Event;
 import evaluation.metrics.IMetricsCollection;
+import games.totoro.TotoroGameState;
 
 import java.util.*;
 
@@ -32,14 +33,19 @@ public class TotoroMetrics implements IMetricsCollection {
         @Override
         public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
             Map<String, Class<?>> columns = new HashMap<>();
-            columns.put("Card played", String.class);
+
+            for(var playerName:playerNames) {
+                columns.put("Card played by "+playerName, String.class);
+            }
             return columns;
         }
 
         @Override
         protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
             var l = (LogEvent) e.action;
-            records.put("Card played", l.text);
+            var s = (TotoroGameState) e.state;
+            var name = listener.getGame().getPlayers().get(s.getCurrentPlayer()).toString();
+            records.put("Card played by " + name, l.text.split("-")[0]);
             return true;
         }
 
