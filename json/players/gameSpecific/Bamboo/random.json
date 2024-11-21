@@ -1,3 +1,4 @@
 {
-  "class" : "players.simple.RandomPlayer"
+  "class" : "players.simple.RandomPlayer",
+  "randomSeed": 0
 }

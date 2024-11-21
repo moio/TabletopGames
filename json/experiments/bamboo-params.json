@@ -5,9 +5,5 @@
   "numberCopies": 5,
   "minNumberValue": 1,
   "maxNumberValue": 9,
-  "operatorCopies": 10,
-
-  "verbose": true,
-  "randomSeed": 0,
-  "recordEventHistory": true
+  "operatorCopies": 6
 }

@@ -8,5 +8,6 @@
   "seed": 0,
   "listener": "metrics/bamboo.json",
   "destDir" : "metrics/out/bamboo",
-  "debug": true
+  "debug": true,
+  "verbose": true
 }

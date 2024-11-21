@@ -18,5 +18,6 @@
 	},
 	"opponentHeuristic" : {
 		"class" : "players.heuristics.ScoreHeuristic"
-	}
+	},
+	"randomSeed": 0
 }
