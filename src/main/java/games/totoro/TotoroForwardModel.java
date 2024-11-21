@@ -6,6 +6,7 @@ import core.StandardForwardModel;
 import core.actions.AbstractAction;
 import core.components.Deck;
 import games.totoro.actions.GiveUpAction;
+import games.totoro.actions.MulliganAction;
 import games.totoro.actions.PlayOperationAction;
 import games.totoro.components.TotoroCard;
 import org.jetbrains.annotations.NotNull;
@@ -94,6 +95,11 @@ public class TotoroForwardModel extends StandardForwardModel {
 
         // giving up always possible
         result.add(GiveUpAction.INSTANCE);
+
+        // mulligan only on first hand
+        if (s.getHistory().isEmpty()){
+            result.add(MulliganAction.INSTANCE);
+        }
 
         return result;
     }
