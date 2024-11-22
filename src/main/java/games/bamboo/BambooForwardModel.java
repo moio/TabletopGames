@@ -214,6 +214,6 @@ public class BambooForwardModel extends StandardForwardModel {
             s.setGameStatus(CoreConstants.GameResult.GAME_END);
         }
 
-        endPlayerTurn(s, s.getNextPlayer(s.getCurrentPlayer()));
+        endPlayerTurn(s);
     }
 }
