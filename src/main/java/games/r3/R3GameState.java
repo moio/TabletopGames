@@ -124,11 +124,9 @@ public class R3GameState extends AbstractGameState implements IPrintable {
         for (int i = 0; i < getNPlayers(); i++) {
             rotationSenses[i] = 1;
         }
-        System.out.println("Unleashing the fury!");
-        System.out.println("  Health: " + health[0] + " vs " + health[1]);
+
         for (int i = 0; i < maxIterations; i++) {
             // resolve actions
-            System.out.println("  Iteration " + i);
             for (int player = 0; player < 2; player++) {
                 var opponent = (player + 1) % 2;
                 var activeDeck = positionPiles.get(player).get(activePositions[player]);
@@ -141,7 +139,6 @@ public class R3GameState extends AbstractGameState implements IPrintable {
                 var opponentCard = opponentActiveDeck.peek();
                 if (card.kind == R3Card.KIND.ATTACK) {
                     var attackPoints = getCardPoints(card, activeDeck.getSize());
-                    System.out.println("    Player " + player + " attacks with " + card.suit + " (" + attackPoints + ", " + activeDeck.getSize() + " cards)");
                     if (opponentCard != null && (
                             card.suit == R3Card.SUIT.ROCK && opponentCard.suit == R3Card.SUIT.PAPER ||
                             card.suit == R3Card.SUIT.PAPER && opponentCard.suit == R3Card.SUIT.SCISSORS ||
@@ -150,13 +147,11 @@ public class R3GameState extends AbstractGameState implements IPrintable {
                         // defense is valid for the attack
                         var defensePoints = getCardPoints(opponentCard, opponentActiveDeck.getSize());
                         health[opponent] -= Math.max(attackPoints - defensePoints, 0);
-                        System.out.println("      Player " + opponent + " defends with " + opponentCard.suit + " (" + defensePoints + ", " + opponentActiveDeck.getSize() + " cards)");
                     } else {
                         health[opponent] -= attackPoints;
                     }
                 } else if (card.kind == R3Card.KIND.ROTATION_CHANGE) {
                     rotationSenses[player] *= -1;
-                    System.out.println("    Player " + player + " rotates!");
                 }
             }
 
@@ -165,12 +160,9 @@ public class R3GameState extends AbstractGameState implements IPrintable {
                 activePositions[player] = ((activePositions[player] + rotationSenses[player]) + p.positions) % p.positions;
             }
 
-            System.out.println("  Health: " + health[0] + " vs " + health[1]);
-
             // check if game is over already
             for (int j = 0; j < health.length; j++) {
                 if (health[j] <= 0){
-                    System.out.println("  Match done!");
                     return health;
                 }
             }
