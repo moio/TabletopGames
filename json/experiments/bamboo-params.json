@@ -1,9 +1,9 @@
 {
   "numberHandSize": 3,
-  "operatorHandSize": 3,
+  "operatorHandSize": 1,
   "objectiveSize": 1,
   "numberCopies": 5,
   "minNumberValue": 1,
   "maxNumberValue": 9,
-  "operatorCopies": 6
+  "operatorCopies": 16
 }
