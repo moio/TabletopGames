@@ -47,11 +47,27 @@ public class TotoroParameters extends TunableParameters {
         addTunableParameter("offerSize", 4);
         addTunableParameter("operationSize", 3);
         addTunableParameter("operationsToWin", 4);
+        _reset();
+    }
+
+    @Override
+    public void _reset() {
+        handSize = (int) getParameterValue("handSize");
+        offerSize = (int) getParameterValue("offerSize");
+        operationSize = (int) getParameterValue("operationSize");
+        operationsToWin = (int) getParameterValue("operationsToWin");
     }
 
     @Override
     protected AbstractParameters _copy() {
-        return new TotoroParameters();
+        var copy = new TotoroParameters();
+
+        copy.offerSize = this.offerSize;
+        copy.handSize = this.handSize;
+        copy.operationSize = this.operationSize;
+        copy.operationsToWin = this.operationsToWin;
+
+        return copy;
     }
 
     @Override
@@ -71,13 +87,5 @@ public class TotoroParameters extends TunableParameters {
     @Override
     public Object instantiate() {
         return new Game(GameType.Totoro, new TotoroForwardModel(), new TotoroGameState(this, 1));
-    }
-
-    @Override
-    public void _reset() {
-        handSize = (int) getParameterValue("handSize");
-        offerSize = (int) getParameterValue("offerSize");
-        operationSize = (int) getParameterValue("operationSize");
-        operationsToWin = (int) getParameterValue("operationsToWin");
     }
 }
