@@ -34,6 +34,7 @@ public class BambooParameters extends TunableParameters {
     public List<NumberCard> allNumberCards;
     public List<OperatorCard> allOperatorCards;
 
+    // default constructor is called dynamically, eg. by ForwardModelTest
     public BambooParameters() {
         addTunableParameter("numberHandSize", 3);
         addTunableParameter("operatorHandSize", 3);
@@ -43,8 +44,7 @@ public class BambooParameters extends TunableParameters {
         addTunableParameter("maxNumberValue", 9);
         addTunableParameter("operatorCopies", 10);
 
-        allNumberCards = new ArrayList<>();
-        allOperatorCards = new ArrayList<>();
+        _reset();
     }
 
     @Override
@@ -57,15 +57,21 @@ public class BambooParameters extends TunableParameters {
         maxNumberValue = (int) getParameterValue("maxNumberValue");
         operatorCopies = (int) getParameterValue("operatorCopies");
 
-        for (int i = minNumberValue; i <= maxNumberValue; i++) {
-            for (int j = 0; j < numberCopies; j++) {
-                allNumberCards.add(new NumberCard(i, j));
+        fillCardSets(this);
+    }
+
+    private void fillCardSets(BambooParameters p) {
+        p.allNumberCards = new ArrayList<>();
+        p.allOperatorCards = new ArrayList<>();
+        for (int i = p.minNumberValue; i <= p.maxNumberValue; i++) {
+            for (int j = 0; j < p.numberCopies; j++) {
+                p.allNumberCards.add(new NumberCard(i, j));
             }
         }
 
-        for (int i = 0; i <= operatorCopies; i++) {
+        for (int i = 0; i <= p.operatorCopies; i++) {
             for (var op : Op.values()){
-                allOperatorCards.add(new OperatorCard(op, i));
+                p.allOperatorCards.add(new OperatorCard(op, i));
             }
         }
     }
@@ -80,11 +86,10 @@ public class BambooParameters extends TunableParameters {
         copy.numberCopies = this.numberCopies;
         copy.minNumberValue = this.minNumberValue;
         copy.maxNumberValue = this.maxNumberValue;
+        copy.operatorCopies = this.operatorCopies;
+        fillCardSets(copy);
 
-        copy.allNumberCards.addAll(this.allNumberCards);
-        copy.allOperatorCards.addAll(this.allOperatorCards);
-
-        return this;
+        return copy;
     }
 
     @Override
@@ -93,12 +98,12 @@ public class BambooParameters extends TunableParameters {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BambooParameters that = (BambooParameters) o;
-        return numberHandSize == that.numberHandSize && operatorHandSize == that.operatorHandSize && objectiveSize == that.objectiveSize && numberCopies == that.numberCopies && minNumberValue == that.minNumberValue && maxNumberValue == that.maxNumberValue && Objects.equals(allNumberCards, that.allNumberCards) && Objects.equals(allOperatorCards, that.allOperatorCards);
+        return numberHandSize == that.numberHandSize && operatorHandSize == that.operatorHandSize && objectiveSize == that.objectiveSize && numberCopies == that.numberCopies && minNumberValue == that.minNumberValue && maxNumberValue == that.maxNumberValue && operatorCopies == that.operatorCopies && Objects.equals(allNumberCards, that.allNumberCards) && Objects.equals(allOperatorCards, that.allOperatorCards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberHandSize, operatorHandSize, objectiveSize, numberCopies, minNumberValue, maxNumberValue, allNumberCards, allOperatorCards);
+        return Objects.hash(super.hashCode(), numberHandSize, operatorHandSize, objectiveSize, numberCopies, minNumberValue, maxNumberValue, operatorCopies, allNumberCards, allOperatorCards);
     }
 
     @Override
