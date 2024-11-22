@@ -35,10 +35,10 @@ public class R3Parameters extends TunableParameters {
     public int heuristicMaxIterations;
 
     public List<R3Card> allCards;
-    public Map<Pair<R3Card.KIND, R3Card.SUIT>,int[]> cardPoints = new HashMap<>();
+    public Map<Pair<R3Card.KIND, R3Card.SUIT>, int[]> cardPoints = new HashMap<>();
 
+    // default constructor is called dynamically, eg. by ForwardModelTest
     public R3Parameters() {
-        super();
         addTunableParameter("handSize", 5);
         addTunableParameter("attackRockCopies", 11);
         addTunableParameter("attackPaperCopies", 12);
@@ -48,19 +48,20 @@ public class R3Parameters extends TunableParameters {
         addTunableParameter("defenseScissorsCopies", 4);
         addTunableParameter("rotationChangeCopies", 5);
 
-        addTunableParameter("attackRockPoints", new int[]{0,0,1,5});
-        addTunableParameter("attackPaperPoints", new int[]{0,0,1,2});
-        addTunableParameter("attackScissorsPoints", new int[]{0,1,2,3});
-        addTunableParameter("defenseRockPoints", new int[]{1,2,3,3});
-        addTunableParameter("defensePaperPoints", new int[]{0,1,2,3});
-        addTunableParameter("defenseScissorsPoints", new int[]{1,3,3,4});
+        addTunableParameter("attackRockPoints", new int[]{0, 0, 1, 5});
+        addTunableParameter("attackPaperPoints", new int[]{0, 0, 1, 2});
+        addTunableParameter("attackScissorsPoints", new int[]{0, 1, 2, 3});
+        addTunableParameter("defenseRockPoints", new int[]{1, 2, 3, 3});
+        addTunableParameter("defensePaperPoints", new int[]{0, 1, 2, 3});
+        addTunableParameter("defenseScissorsPoints", new int[]{1, 3, 3, 4});
 
         addTunableParameter("positions", 6);
         addTunableParameter("positionsToFight", 5);
         addTunableParameter("healthPoints", 20);
-        // healthPoints * positionsToFight
-        addTunableParameter("maxIterations", 100);
+        addTunableParameter("maxIterations", 100); // healthPoints * positionsToFight
         addTunableParameter("heuristicMaxIterations", 10);
+
+        _reset();
     }
 
     @Override
@@ -85,36 +86,40 @@ public class R3Parameters extends TunableParameters {
         maxIterations = (int) getParameterValue("maxIterations");
         heuristicMaxIterations = (int) getParameterValue("heuristicMaxIterations");
 
-        allCards = new ArrayList<>();
-        for (int i = 0; i < attackRockCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.ATTACK, R3Card.SUIT.ROCK, i));
+        fillDependentFields(this);
+    }
+
+    private void fillDependentFields(R3Parameters p) {
+        p.allCards = new ArrayList<>();
+        for (int i = 0; i < p.attackRockCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.ATTACK, R3Card.SUIT.ROCK, i));
         }
-        for (int i = 0; i < attackPaperCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.ATTACK, R3Card.SUIT.PAPER, i));
+        for (int i = 0; i < p.attackPaperCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.ATTACK, R3Card.SUIT.PAPER, i));
         }
-        for (int i = 0; i < attackScissorsCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.ATTACK, R3Card.SUIT.SCISSORS, i));
+        for (int i = 0; i < p.attackScissorsCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.ATTACK, R3Card.SUIT.SCISSORS, i));
         }
-        for (int i = 0; i < defenseRockCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.DEFENSE, R3Card.SUIT.ROCK, i));
+        for (int i = 0; i < p.defenseRockCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.DEFENSE, R3Card.SUIT.ROCK, i));
         }
-        for (int i = 0; i < defensePaperCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.DEFENSE, R3Card.SUIT.PAPER, i));
+        for (int i = 0; i < p.defensePaperCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.DEFENSE, R3Card.SUIT.PAPER, i));
         }
-        for (int i = 0; i < defenseScissorsCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.DEFENSE, R3Card.SUIT.SCISSORS, i));
+        for (int i = 0; i < p.defenseScissorsCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.DEFENSE, R3Card.SUIT.SCISSORS, i));
         }
-        for (int i = 0; i < rotationChangeCopies; i++) {
-            allCards.add(new R3Card(R3Card.KIND.ROTATION_CHANGE, R3Card.SUIT.NONE, i));
+        for (int i = 0; i < p.rotationChangeCopies; i++) {
+            p.allCards.add(new R3Card(R3Card.KIND.ROTATION_CHANGE, R3Card.SUIT.NONE, i));
         }
 
-        cardPoints=new HashMap<>();
-        cardPoints.put(new Pair<>(R3Card.KIND.ATTACK, R3Card.SUIT.ROCK), attackRockPoints);
-        cardPoints.put(new Pair<>(R3Card.KIND.ATTACK, R3Card.SUIT.PAPER), attackPaperPoints);
-        cardPoints.put(new Pair<>(R3Card.KIND.ATTACK, R3Card.SUIT.SCISSORS), attackScissorsPoints);
-        cardPoints.put(new Pair<>(R3Card.KIND.DEFENSE, R3Card.SUIT.ROCK), defenseRockPoints);
-        cardPoints.put(new Pair<>(R3Card.KIND.DEFENSE, R3Card.SUIT.PAPER), defensePaperPoints);
-        cardPoints.put(new Pair<>(R3Card.KIND.DEFENSE, R3Card.SUIT.SCISSORS), defenseScissorsPoints);
+        p.cardPoints = new HashMap<>();
+        p.cardPoints.put(new Pair<>(R3Card.KIND.ATTACK, R3Card.SUIT.ROCK), p.attackRockPoints);
+        p.cardPoints.put(new Pair<>(R3Card.KIND.ATTACK, R3Card.SUIT.PAPER), p.attackPaperPoints);
+        p.cardPoints.put(new Pair<>(R3Card.KIND.ATTACK, R3Card.SUIT.SCISSORS), p.attackScissorsPoints);
+        p.cardPoints.put(new Pair<>(R3Card.KIND.DEFENSE, R3Card.SUIT.ROCK), p.defenseRockPoints);
+        p.cardPoints.put(new Pair<>(R3Card.KIND.DEFENSE, R3Card.SUIT.PAPER), p.defensePaperPoints);
+        p.cardPoints.put(new Pair<>(R3Card.KIND.DEFENSE, R3Card.SUIT.SCISSORS), p.defenseScissorsPoints);
     }
 
     @Override
@@ -141,10 +146,9 @@ public class R3Parameters extends TunableParameters {
         copy.maxIterations = maxIterations;
         copy.heuristicMaxIterations = heuristicMaxIterations;
 
-        copy.allCards = new ArrayList<>(allCards);
-        copy.cardPoints = new HashMap<>(cardPoints);
+        fillDependentFields(copy);
 
-        return this;
+        return copy;
     }
 
     @Override
@@ -153,12 +157,12 @@ public class R3Parameters extends TunableParameters {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         R3Parameters that = (R3Parameters) o;
-        return handSize == that.handSize && attackRockCopies == that.attackRockCopies && attackPaperCopies == that.attackPaperCopies && attackScissorsCopies == that.attackScissorsCopies && defenseRockCopies == that.defenseRockCopies && defensePaperCopies == that.defensePaperCopies && defenseScissorsCopies == that.defenseScissorsCopies && rotationChangeCopies == that.rotationChangeCopies && positions == that.positions && positionsToFight == that.positionsToFight && healthPoints == that.healthPoints && Objects.deepEquals(attackRockPoints, that.attackRockPoints) && Objects.deepEquals(attackPaperPoints, that.attackPaperPoints) && Objects.deepEquals(attackScissorsPoints, that.attackScissorsPoints) && Objects.deepEquals(defenseRockPoints, that.defenseRockPoints) && Objects.deepEquals(defensePaperPoints, that.defensePaperPoints) && Objects.deepEquals(defenseScissorsPoints, that.defenseScissorsPoints) && Objects.equals(allCards, that.allCards) && Objects.equals(cardPoints, that.cardPoints) && Objects.equals(maxIterations, that.maxIterations) && Objects.equals(heuristicMaxIterations, that.heuristicMaxIterations);
+        return handSize == that.handSize && attackRockCopies == that.attackRockCopies && attackPaperCopies == that.attackPaperCopies && attackScissorsCopies == that.attackScissorsCopies && defenseRockCopies == that.defenseRockCopies && defensePaperCopies == that.defensePaperCopies && defenseScissorsCopies == that.defenseScissorsCopies && rotationChangeCopies == that.rotationChangeCopies && positions == that.positions && positionsToFight == that.positionsToFight && healthPoints == that.healthPoints && maxIterations == that.maxIterations && heuristicMaxIterations == that.heuristicMaxIterations && Objects.deepEquals(attackRockPoints, that.attackRockPoints) && Objects.deepEquals(attackPaperPoints, that.attackPaperPoints) && Objects.deepEquals(attackScissorsPoints, that.attackScissorsPoints) && Objects.deepEquals(defenseRockPoints, that.defenseRockPoints) && Objects.deepEquals(defensePaperPoints, that.defensePaperPoints) && Objects.deepEquals(defenseScissorsPoints, that.defenseScissorsPoints) && Objects.equals(allCards, that.allCards) && Objects.equals(cardPoints, that.cardPoints);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), handSize, attackRockCopies, attackPaperCopies, attackScissorsCopies, defenseRockCopies, defensePaperCopies, defenseScissorsCopies, rotationChangeCopies, Arrays.hashCode(attackRockPoints), Arrays.hashCode(attackPaperPoints), Arrays.hashCode(attackScissorsPoints), Arrays.hashCode(defenseRockPoints), Arrays.hashCode(defensePaperPoints), Arrays.hashCode(defenseScissorsPoints), positions, positionsToFight, healthPoints, allCards, cardPoints, maxIterations, heuristicMaxIterations);
+        return Objects.hash(super.hashCode(), handSize, attackRockCopies, attackPaperCopies, attackScissorsCopies, defenseRockCopies, defensePaperCopies, defenseScissorsCopies, rotationChangeCopies, Arrays.hashCode(attackRockPoints), Arrays.hashCode(attackPaperPoints), Arrays.hashCode(attackScissorsPoints), Arrays.hashCode(defenseRockPoints), Arrays.hashCode(defensePaperPoints), Arrays.hashCode(defenseScissorsPoints), positions, positionsToFight, healthPoints, maxIterations, heuristicMaxIterations, allCards, cardPoints);
     }
 
     @Override

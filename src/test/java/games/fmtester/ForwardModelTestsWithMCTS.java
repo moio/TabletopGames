@@ -105,4 +105,9 @@ public class ForwardModelTestsWithMCTS {
     public void testBamboo() {
         new ForwardModelTester("game=Bamboo", "nGames=10", "nPlayers=2", "agent=json/players/mcts.json");
     }
+
+    @Test
+    public void testR3() {
+        new ForwardModelTester("game=R3", "nGames=10", "nPlayers=2", "agent=json/players/mcts.json");
+    }
 }
