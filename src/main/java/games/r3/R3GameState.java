@@ -4,15 +4,17 @@ import core.AbstractGameState;
 import core.AbstractParameters;
 import core.components.Component;
 import core.components.Deck;
+import core.interfaces.IPrintable;
 import games.GameType;
 import games.r3.components.R3Card;
+import org.jetbrains.annotations.NotNull;
 import utilities.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class R3GameState extends AbstractGameState {
+public class R3GameState extends AbstractGameState implements IPrintable {
     // common
     public Deck<R3Card> drawPile;
 
@@ -234,6 +236,34 @@ public class R3GameState extends AbstractGameState {
         return Objects.hash(super.hashCode(), drawPile, positionPiles, hands);
     }
 
-    // This method can be used to log a game event (e.g. for something game-specific that you want to include in the metrics)
-    // public void logEvent(IGameEvent...)
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+
+        for (int i = 0; i < getNPlayers(); i++) {
+            sb.append("Player ").append(i).append(" robot: ").append(robotToString(i)).append("\n");
+        }
+
+        var currentPlayer = getCurrentPlayer();
+        sb.append("Player ").append(currentPlayer).append(" Hand: ").append(hands.get(currentPlayer));
+
+        return sb.toString();
+    }
+
+    @NotNull
+    private String robotToString(int currentPlayer) {
+        return positionPiles.get(currentPlayer)
+                .stream()
+                .map(d -> {
+                    if (d.getSize()==0) {
+                        return "____";
+                    } else {
+                        var card = d.peek();
+                        var points = getCardPoints(card, d.getSize());
+                        return card.kind.name().substring(0, 1) + card.suit.toString().substring(0, 1) + String.format("%2d", points);
+                    }
+                })
+                .toList()
+                .toString();
+    }
 }

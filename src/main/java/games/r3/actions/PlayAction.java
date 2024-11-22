@@ -65,7 +65,7 @@ public class PlayAction extends AbstractAction {
 
     @Override
     public String toString() {
-        return cardStrings + " in position " + deckString;
+        return "Play " + cardStrings + " in " + deckString;
     }
 
     @Override

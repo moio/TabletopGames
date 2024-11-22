@@ -33,7 +33,7 @@ public class R3Card extends Card {
     }
 
     private static String repr(KIND kind, SUIT suit, int copy) {
-        return kind + "_" + suit + "-" + copy;
+        return kind.name().substring(0,1) + suit.name().substring(0,1);
     }
 
     @Override
