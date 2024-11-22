@@ -216,7 +216,7 @@ public enum GameType {
     Totoro(1, 1,
             null,
             null,
-            TotoroGameState.class, TotoroForwardModel.class, TotoroParameters.class, PrototypeGUIManager.class),
+            TotoroGameState.class, TotoroForwardModel.class, TotoroParameters.class, TotoroGUIManager.class),
     Bamboo(2, 5,
             null,
             null,

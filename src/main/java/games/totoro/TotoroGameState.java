@@ -4,6 +4,7 @@ import core.AbstractGameState;
 import core.AbstractParameters;
 import core.components.Component;
 import core.components.Deck;
+import core.interfaces.IPrintable;
 import games.GameType;
 import games.totoro.components.TotoroCard;
 
@@ -19,7 +20,8 @@ import java.util.Objects;
  * <p>Computation may be included in functions here for ease of access, but only if this is querying the game state information.
  * Functions on the game state should never <b>change</b> the state of the game.</p>
  */
-public class TotoroGameState extends AbstractGameState {
+public class TotoroGameState extends AbstractGameState implements IPrintable {
+
 
     public Deck<TotoroCard> hand;
     public Deck<TotoroCard> offer;
@@ -144,6 +146,15 @@ public class TotoroGameState extends AbstractGameState {
         return Objects.hash(super.hashCode(), hand, offer, drawPile, operations);
     }
 
-    // This method can be used to log a game event (e.g. for something game-specific that you want to include in the metrics)
-    // public void logEvent(IGameEvent...)
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        sb.append("Hand: " + hand);
+        sb.append("\n");
+        sb.append("Offer: " + offer);
+        sb.append("\n");
+        sb.append("Previously won: " + operations);
+
+        return sb.toString();
+    }
 }

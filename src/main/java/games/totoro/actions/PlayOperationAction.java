@@ -99,7 +99,17 @@ public class PlayOperationAction extends AbstractAction {
 
     @Override
     public String toString() {
-        return "Play(" + this.strings.toString()+")";
+        var sb = new StringBuilder();
+        for (var i = 0; i < strings.size(); i++) {
+            sb.append(strings.get(i));
+            if (i < strings.size() - 2) {
+                sb.append("+");
+            }
+            else if (i < strings.size() - 1) {
+                sb.append("=");
+            }
+        }
+        return sb.toString();
     }
 
     /**

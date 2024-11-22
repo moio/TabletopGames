@@ -14,7 +14,7 @@ public class TotoroCard extends Card {
     }
 
     public TotoroCard(int value, int copy) {
-        super(value + "-" + copy);
+        super(value + (copy == 0 ? "" : "-" + copy));
         this.value = value;
         this.copy = copy;
         this.hash = Objects.hash(super.hashCode(), value, copy);
@@ -22,7 +22,7 @@ public class TotoroCard extends Card {
 
     @Override
     public String toString() {
-        return value + "-" + copy;
+        return value + (copy == 0 ? "" : "-" + copy);
     }
 
     @Override
