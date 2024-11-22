@@ -88,7 +88,7 @@ public class ResolveAction extends AbstractAction {
             }
         }
 
-        // fix current player hand
+        // fix current player numbers hand
         var replenishment = p.numberHandSize - hand.getSize();
         for (int i = 0; i < replenishment; i++) {
             var c = s.numberDrawPile.draw();
@@ -97,7 +97,7 @@ public class ResolveAction extends AbstractAction {
             }
         }
 
-        // fix other player hands
+        // fix other player numbers hands
         for (int i = 0; i < s.getNPlayers(); i++) {
             if (i != playerId) {
                 var otherPlayerHand = s.numberHands.get(i);
@@ -105,6 +105,21 @@ public class ResolveAction extends AbstractAction {
                 for (int j = 0; j < punishment; j++) {
                     numberWonPile.add(otherPlayerHand.pick(s.getRnd()));
                 }
+            }
+        }
+
+        // fix all player operators hands
+        for (int i = 0; i < s.getNPlayers(); i++) {
+            var playerHand = s.operatorHands.get(i);
+            for (int j = 0; j < playerHand.getSize(); j++) {
+                s.operatorDrawPile.add(playerHand.draw());
+            }
+        }
+        s.operatorDrawPile.shuffle(s.getRnd());
+        for (int i = 0; i < s.getNPlayers(); i++) {
+            var playerHand = s.operatorHands.get(i);
+            for (int j = 0; j < p.operatorHandSize; j++) {
+                playerHand.add(s.operatorDrawPile.draw());
             }
         }
 

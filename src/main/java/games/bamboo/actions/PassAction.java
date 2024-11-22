@@ -64,6 +64,12 @@ public class PassAction extends AbstractAction {
                 hand.add(s.operatorDrawPile.draw());
             }
         }
+        else {
+            if (s.operatorDrawPile.getSize() > 0) {
+                // draw _operator_
+                s.operatorHands.get(playerId).add(s.operatorDrawPile.draw());
+            }
+        }
 
         return true;
     }
