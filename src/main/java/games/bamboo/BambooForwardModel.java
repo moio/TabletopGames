@@ -52,7 +52,6 @@ public class BambooForwardModel extends StandardForwardModel {
         // create decks
         s.objective = new ArrayList<>();
         s.numberDrawPile = new Deck<NumberCard>("Number Draw Pile", CoreConstants.VisibilityMode.HIDDEN_TO_ALL);
-        s.numberDiscardPile = new Deck<NumberCard>("Number Discard Pile", CoreConstants.VisibilityMode.VISIBLE_TO_ALL);
         s.operatorDrawPile = new Deck<OperatorCard>("Operator Draw Pile", CoreConstants.VisibilityMode.HIDDEN_TO_ALL);
 
         s.numberHands = new ArrayList<>();
@@ -129,23 +128,16 @@ public class BambooForwardModel extends StandardForwardModel {
                         if (toDiscard > 0) {
                             var newHand = s.numberHands.get(playerId).copy();
                             newHand.removeAll(numberCombination);
-                            var discardCombinations = new PermutationIteratorPlus<NumberCard>(newHand.stream().toList(), toDiscard);
-
-                            while (discardCombinations.hasNext()) {
-                                var discardCombination = discardCombinations.next();
-                                actions.add(new ResolveAction(
-                                        numberCombination,
-                                        operatorCombination,
-                                        discardCombination,
-                                        intObjective
-                                ));
-                            }
+                            actions.add(new ResolveAction(
+                                    numberCombination,
+                                    operatorCombination,
+                                    intObjective
+                            ));
                         }
                         else {
                             actions.add(new ResolveAction(
                                     numberCombination,
                                     operatorCombination,
-                                    Collections.emptyList(),
                                     intObjective
                             ));
                         }

@@ -33,14 +33,12 @@ import java.util.Objects;
 public class ResolveAction extends AbstractAction {
     public final List<Integer> numberIDs;
     public final List<Integer> operatorIDs;
-    public final List<Integer> discardedIDs;
 
     public final List<String> numberStrings;
     public final List<String> operatorStrings;
-    public final List<String> discardedStrings;
     public final int result;
 
-    public ResolveAction(List<NumberCard> numbers, List<OperatorCard> operators, List<NumberCard> discarded, int result){
+    public ResolveAction(List<NumberCard> numbers, List<OperatorCard> operators, int result){
         // sanity check
         if (operators.size() != numbers.size() -1) {
             throw new RuntimeException("bad operators");
@@ -48,11 +46,9 @@ public class ResolveAction extends AbstractAction {
 
         this.numberIDs = numbers.stream().map(Component::getComponentID).toList();
         this.operatorIDs = operators.stream().map(Component::getComponentID).toList();
-        this.discardedIDs = discarded.stream().map(Component::getComponentID).toList();
 
         this.numberStrings = numbers.stream().map(c -> c.value + "").toList();
         this.operatorStrings = operators.stream().map(c -> c.op.toString()).toList();
-        this.discardedStrings = discarded.stream().map(c -> c.value + "").toList();
         this.result = result;
     }
 
@@ -93,11 +89,6 @@ public class ResolveAction extends AbstractAction {
         }
 
         // fix current player hand
-        discardedIDs.forEach(i -> {
-            var c = (NumberCard) s.getComponentById(i);
-            hand.remove(c);
-            s.numberDiscardPile.add(c);
-        });
         var replenishment = p.numberHandSize - hand.getSize();
         for (int i = 0; i < replenishment; i++) {
             var c = s.numberDrawPile.draw();
@@ -136,12 +127,12 @@ public class ResolveAction extends AbstractAction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResolveAction that = (ResolveAction) o;
-        return Objects.equals(numberIDs, that.numberIDs) && Objects.equals(operatorIDs, that.operatorIDs) && Objects.equals(discardedIDs, that.discardedIDs);
+        return Objects.equals(numberIDs, that.numberIDs) && Objects.equals(operatorIDs, that.operatorIDs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberIDs, operatorIDs, discardedIDs);
+        return Objects.hash(numberIDs, operatorIDs);
     }
 
     @Override
@@ -155,13 +146,6 @@ public class ResolveAction extends AbstractAction {
         }
         result.append("=");
         result.append(this.result);
-
-        result.append("D[");
-        for (String discardedString : discardedStrings) {
-            result.append(discardedString);
-            result.append(",");
-        }
-        result.append("]");
 
         return result.toString();
     }

@@ -24,7 +24,6 @@ public class BambooGameState extends AbstractGameState {
     // common
     public List<NumberCard> objective;
     public Deck<NumberCard> numberDrawPile;
-    public Deck<NumberCard> numberDiscardPile;
     public Deck<OperatorCard> operatorDrawPile;
 
     // per-player
@@ -59,7 +58,6 @@ public class BambooGameState extends AbstractGameState {
         return new ArrayList<>(){{
             addAll(objective);
             add(numberDrawPile);
-            add(numberDiscardPile);
             add(operatorDrawPile);
 
             addAll(numberHands);
@@ -94,7 +92,6 @@ public class BambooGameState extends AbstractGameState {
             copy.objective.add(digit.copy());
         }
         copy.numberDrawPile = this.numberDrawPile.copy();
-        copy.numberDiscardPile = this.numberDiscardPile.copy();
         copy.operatorDrawPile = this.operatorDrawPile.copy();
 
         copy.numberHands = new ArrayList<>();
@@ -179,12 +176,12 @@ public class BambooGameState extends AbstractGameState {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BambooGameState that = (BambooGameState) o;
-        return Objects.equals(objective, that.objective) && Objects.equals(numberDrawPile, that.numberDrawPile) && Objects.equals(numberDiscardPile, that.numberDiscardPile) && Objects.equals(operatorDrawPile, that.operatorDrawPile) && Objects.equals(numberHands, that.numberHands) && Objects.equals(operatorHands, that.operatorHands) && Objects.equals(numberWonPiles, that.numberWonPiles);
+        return Objects.equals(objective, that.objective) && Objects.equals(numberDrawPile, that.numberDrawPile) && Objects.equals(operatorDrawPile, that.operatorDrawPile) && Objects.equals(numberHands, that.numberHands) && Objects.equals(operatorHands, that.operatorHands) && Objects.equals(numberWonPiles, that.numberWonPiles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), objective, numberDrawPile, numberDiscardPile, operatorDrawPile, numberHands, operatorHands, numberWonPiles);
+        return Objects.hash(super.hashCode(), objective, numberDrawPile, operatorDrawPile, numberHands, operatorHands, numberWonPiles);
     }
 
     // This method can be used to log a game event (e.g. for something game-specific that you want to include in the metrics)
