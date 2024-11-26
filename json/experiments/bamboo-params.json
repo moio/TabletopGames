@@ -2,7 +2,7 @@
   "numberHandSize": 3,
   "operatorHandSize": 1,
   "minObjectiveValue": 1,
-  "maxObjectiveValue": 9,
+  "maxObjectiveValue": 20,
   "numberCopies": 5,
   "minNumberValue": 1,
   "maxNumberValue": 9,
