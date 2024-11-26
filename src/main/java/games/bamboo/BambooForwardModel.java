@@ -50,9 +50,10 @@ public class BambooForwardModel extends StandardForwardModel {
         var p = (BambooParameters) s.getGameParameters();
 
         // create decks
-        s.objective = new ArrayList<>();
         s.numberDrawPile = new Deck<NumberCard>("Number Draw Pile", CoreConstants.VisibilityMode.HIDDEN_TO_ALL);
         s.operatorDrawPile = new Deck<OperatorCard>("Operator Draw Pile", CoreConstants.VisibilityMode.HIDDEN_TO_ALL);
+        s.objectiveDrawPile = new Deck<NumberCard>("Objective Draw Pile", CoreConstants.VisibilityMode.HIDDEN_TO_ALL);
+        s.objective = new Deck<NumberCard>("Objective", CoreConstants.VisibilityMode.VISIBLE_TO_ALL);
 
         s.numberHands = new ArrayList<>();
         s.operatorHands = new ArrayList<>();
@@ -70,9 +71,11 @@ public class BambooForwardModel extends StandardForwardModel {
         s.operatorDrawPile.add(p.allOperatorCards);
         s.operatorDrawPile.shuffle(s.getRnd());
 
-        for (int i = 0; i < p.objectiveSize; i++) {
-            s.objective.add(s.numberDrawPile.draw());
-        }
+        s.objectiveDrawPile.add(p.allObjectiveCards);
+        s.objectiveDrawPile.shuffle(s.getRnd());
+
+        // discover the objective
+        s.objective.add(s.objectiveDrawPile.draw());
 
         for (int i = 0; i < s.getNPlayers(); i++) {
             for (int j = 0; j < p.numberHandSize; j++) {
@@ -93,12 +96,6 @@ public class BambooForwardModel extends StandardForwardModel {
         List<AbstractAction> actions = new ArrayList<>();
         var s = (BambooGameState) gameState;
         var p = (BambooParameters) s.getGameParameters();
-
-        var intObjective = 0;
-        for (int i = 0; i< p.objectiveSize; i++) {
-            var digit = s.objective.get(i).value;
-            intObjective += (int) (digit * Math.pow(10, i));
-        }
 
         var playerId = s.getCurrentPlayer();
         var operatorHand = s.operatorHands.get(playerId).stream().toList();
@@ -122,11 +119,11 @@ public class BambooForwardModel extends StandardForwardModel {
                         result = apply(result, numberCombination.get(i+1).value, operatorCombination.get(i));
                     }
 
-                    if (result == intObjective) {
+                    if (result == s.objective.peek().value) {
                         actions.add(new ResolveAction(
                                 numberCombination,
                                 operatorCombination,
-                                intObjective
+                                s.objective.peek()
                         ));
                     }
                 }
@@ -197,7 +194,7 @@ public class BambooForwardModel extends StandardForwardModel {
     protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
         var s = (BambooGameState) currentState;
 
-        if (s.numberDrawPile.getSize() == 0) {
+        if (s.numberDrawPile.getSize() == 0 || s.objectiveDrawPile.getSize() == 0) {
             s.setGameStatus(CoreConstants.GameResult.GAME_END);
         }
 

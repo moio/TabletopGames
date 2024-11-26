@@ -36,9 +36,10 @@ public class ResolveAction extends AbstractAction {
 
     public final List<String> numberStrings;
     public final List<String> operatorStrings;
-    public final int result;
+    public final Integer objectiveId;
+    public final int objectiveValue;
 
-    public ResolveAction(List<NumberCard> numbers, List<OperatorCard> operators, int result){
+    public ResolveAction(List<NumberCard> numbers, List<OperatorCard> operators, NumberCard objectiveCard) {
         // sanity check
         if (operators.size() != numbers.size() -1) {
             throw new RuntimeException("bad operators");
@@ -49,7 +50,9 @@ public class ResolveAction extends AbstractAction {
 
         this.numberStrings = numbers.stream().map(c -> c.value + "").toList();
         this.operatorStrings = operators.stream().map(c -> c.op.toString()).toList();
-        this.result = result;
+
+        this.objectiveId = objectiveCard.getComponentID();
+        this.objectiveValue = objectiveCard.value;
     }
 
     /**
@@ -74,18 +77,15 @@ public class ResolveAction extends AbstractAction {
             numberWonPile.add(c);
         });
 
-        // take cards out of objective into won pile
-        for (var digit : s.objective) {
-            numberWonPile.add(digit);
-        }
-        s.objective.clear();
+        // take objectiveCard into won pile
+        var objectiveCard = (NumberCard) s.getComponentById(objectiveId);
+        s.objective.remove(objectiveCard);
+        numberWonPile.add(objectiveCard);
 
         // replenish objective
-        for (int i = 0; i < p.objectiveSize; i++) {
-            var c = s.numberDrawPile.draw();
-            if (c != null) {
-                s.objective.add(c);
-            }
+        var nextObjective = s.objectiveDrawPile.draw();
+        if (nextObjective != null) {
+            s.objective.add(nextObjective);
         }
 
         // fix current player numbers hand
@@ -142,27 +142,12 @@ public class ResolveAction extends AbstractAction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResolveAction that = (ResolveAction) o;
-        return Objects.equals(numberIDs, that.numberIDs) && Objects.equals(operatorIDs, that.operatorIDs);
+        return Objects.equals(numberIDs, that.numberIDs) && Objects.equals(operatorIDs, that.operatorIDs) && Objects.equals(objectiveValue, that.objectiveValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberIDs, operatorIDs);
-    }
-
-    @Override
-    public String toString() {
-        var result = new StringBuilder();
-
-        result.append(numberStrings.get(0));
-        for (int i = 0; i < operatorStrings.size(); i++) {
-            result.append(operatorStrings.get(i));
-            result.append(numberStrings.get(i+1));
-        }
-        result.append("=");
-        result.append(this.result);
-
-        return result.toString();
+        return Objects.hash(numberIDs, operatorIDs, objectiveValue);
     }
 
     /**
@@ -176,6 +161,20 @@ public class ResolveAction extends AbstractAction {
         return toString();
     }
 
+    @Override
+    public String toString() {
+        var result = new StringBuilder();
+
+        result.append(numberStrings.get(0));
+        for (int i = 0; i < operatorStrings.size(); i++) {
+            result.append(operatorStrings.get(i));
+            result.append(numberStrings.get(i+1));
+        }
+        result.append("=");
+        result.append(objectiveValue);
+
+        return result.toString();
+    }
 
     /**
      * This next one is optional.

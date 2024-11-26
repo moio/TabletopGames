@@ -22,9 +22,10 @@ import java.util.Objects;
  */
 public class BambooGameState extends AbstractGameState {
     // common
-    public List<NumberCard> objective;
     public Deck<NumberCard> numberDrawPile;
     public Deck<OperatorCard> operatorDrawPile;
+    public Deck<NumberCard> objectiveDrawPile;
+    public Deck<NumberCard> objective;
 
     // per-player
     public List<Deck<NumberCard>> numberHands;
@@ -56,9 +57,10 @@ public class BambooGameState extends AbstractGameState {
     @Override
     protected List<Component> _getAllComponents() {
         return new ArrayList<>(){{
-            addAll(objective);
             add(numberDrawPile);
             add(operatorDrawPile);
+            add(objectiveDrawPile);
+            add(objective);
 
             addAll(numberHands);
             addAll(operatorHands);
@@ -87,12 +89,10 @@ public class BambooGameState extends AbstractGameState {
     protected BambooGameState _copy(int playerId) {
         BambooGameState copy = new BambooGameState(gameParameters, getNPlayers());
 
-        copy.objective = new ArrayList<>();
-        for (var digit: this.objective) {
-            copy.objective.add(digit.copy());
-        }
         copy.numberDrawPile = this.numberDrawPile.copy();
         copy.operatorDrawPile = this.operatorDrawPile.copy();
+        copy.objectiveDrawPile = this.objectiveDrawPile.copy();
+        copy.objective = this.objective.copy();
 
         copy.numberHands = new ArrayList<>();
         for (var hand: this.numberHands) {
@@ -136,6 +136,12 @@ public class BambooGameState extends AbstractGameState {
             }
         }
 
+        copy.objectiveDrawPile.add(copy.objective);
+        copy.objective.clear();
+        copy.objectiveDrawPile.shuffle(redeterminisationRnd);
+        copy.objective.add(copy.objectiveDrawPile.draw());
+
+
         return copy;
     }
 
@@ -149,7 +155,7 @@ public class BambooGameState extends AbstractGameState {
         var p = (BambooParameters) getGameParameters();
 
         if (isNotTerminal()) {
-            return ((double) this.numberWonPiles.get(playerId).getSize()) / p.allNumberCards.size();
+            return ((double) this.numberWonPiles.get(playerId).getSize()) / (p.allNumberCards.size() + p.allObjectiveCards.size());
         } else {
             // The game finished, we can instead return the actual result of the game for the given player.
             return getPlayerResults()[playerId].value;
@@ -171,12 +177,12 @@ public class BambooGameState extends AbstractGameState {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BambooGameState that = (BambooGameState) o;
-        return Objects.equals(objective, that.objective) && Objects.equals(numberDrawPile, that.numberDrawPile) && Objects.equals(operatorDrawPile, that.operatorDrawPile) && Objects.equals(numberHands, that.numberHands) && Objects.equals(operatorHands, that.operatorHands) && Objects.equals(numberWonPiles, that.numberWonPiles);
+        return Objects.equals(numberDrawPile, that.numberDrawPile) && Objects.equals(operatorDrawPile, that.operatorDrawPile) && Objects.equals(objectiveDrawPile, that.objectiveDrawPile) && Objects.equals(objective, that.objective) && Objects.equals(numberHands, that.numberHands) && Objects.equals(operatorHands, that.operatorHands) && Objects.equals(numberWonPiles, that.numberWonPiles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), objective, numberDrawPile, operatorDrawPile, numberHands, operatorHands, numberWonPiles);
+        return Objects.hash(super.hashCode(), numberDrawPile, operatorDrawPile, objectiveDrawPile, objective, numberHands, operatorHands, numberWonPiles);
     }
 
     // This method can be used to log a game event (e.g. for something game-specific that you want to include in the metrics)

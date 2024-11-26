@@ -26,19 +26,22 @@ import java.util.Objects;
 public class BambooParameters extends TunableParameters {
     public int numberHandSize;
     public int operatorHandSize;
-    public int objectiveSize;
+    public int minObjectiveValue;
+    public int maxObjectiveValue;
     public int numberCopies;
     public int minNumberValue;
     public int maxNumberValue;
     public int operatorCopies;
     public List<NumberCard> allNumberCards;
     public List<OperatorCard> allOperatorCards;
+    public List<NumberCard> allObjectiveCards;
 
     // default constructor is called dynamically, eg. by ForwardModelTest
     public BambooParameters() {
         addTunableParameter("numberHandSize", 3);
         addTunableParameter("operatorHandSize", 3);
-        addTunableParameter("objectiveSize", 1);
+        addTunableParameter("minObjectiveValue", 1);
+        addTunableParameter("maxObjectiveValue", 9);
         addTunableParameter("numberCopies", 5);
         addTunableParameter("minNumberValue", 1);
         addTunableParameter("maxNumberValue", 9);
@@ -51,7 +54,8 @@ public class BambooParameters extends TunableParameters {
     public void _reset() {
         numberHandSize = (int) getParameterValue("numberHandSize");
         operatorHandSize = (int) getParameterValue("operatorHandSize");
-        objectiveSize = (int) getParameterValue("objectiveSize");
+        minObjectiveValue = (int) getParameterValue("minObjectiveValue");
+        maxObjectiveValue = (int) getParameterValue("maxObjectiveValue");
         numberCopies = (int) getParameterValue("numberCopies");
         minNumberValue = (int) getParameterValue("minNumberValue");
         maxNumberValue = (int) getParameterValue("maxNumberValue");
@@ -63,6 +67,7 @@ public class BambooParameters extends TunableParameters {
     private void fillCardSets(BambooParameters p) {
         p.allNumberCards = new ArrayList<>();
         p.allOperatorCards = new ArrayList<>();
+        p.allObjectiveCards = new ArrayList<>();
         for (int i = p.minNumberValue; i <= p.maxNumberValue; i++) {
             for (int j = 0; j < p.numberCopies; j++) {
                 p.allNumberCards.add(new NumberCard(i, j));
@@ -74,6 +79,10 @@ public class BambooParameters extends TunableParameters {
                 p.allOperatorCards.add(new OperatorCard(op, i));
             }
         }
+
+        for (int i = p.minObjectiveValue; i <= p.maxObjectiveValue; i++) {
+            p.allObjectiveCards.add(new NumberCard(i, 0));
+        }
     }
 
     @Override
@@ -82,7 +91,8 @@ public class BambooParameters extends TunableParameters {
 
         copy.numberHandSize = this.numberHandSize;
         copy.operatorHandSize = this.operatorHandSize;
-        copy.objectiveSize = this.objectiveSize;
+        copy.minObjectiveValue = this.minObjectiveValue;
+        copy.maxObjectiveValue = this.maxObjectiveValue;
         copy.numberCopies = this.numberCopies;
         copy.minNumberValue = this.minNumberValue;
         copy.maxNumberValue = this.maxNumberValue;
@@ -98,12 +108,12 @@ public class BambooParameters extends TunableParameters {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BambooParameters that = (BambooParameters) o;
-        return numberHandSize == that.numberHandSize && operatorHandSize == that.operatorHandSize && objectiveSize == that.objectiveSize && numberCopies == that.numberCopies && minNumberValue == that.minNumberValue && maxNumberValue == that.maxNumberValue && operatorCopies == that.operatorCopies && Objects.equals(allNumberCards, that.allNumberCards) && Objects.equals(allOperatorCards, that.allOperatorCards);
+        return numberHandSize == that.numberHandSize && operatorHandSize == that.operatorHandSize && minObjectiveValue == that.minObjectiveValue && maxObjectiveValue == that.maxObjectiveValue && numberCopies == that.numberCopies && minNumberValue == that.minNumberValue && maxNumberValue == that.maxNumberValue && operatorCopies == that.operatorCopies && Objects.equals(allNumberCards, that.allNumberCards) && Objects.equals(allOperatorCards, that.allOperatorCards) && Objects.equals(allObjectiveCards, that.allObjectiveCards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberHandSize, operatorHandSize, objectiveSize, numberCopies, minNumberValue, maxNumberValue, operatorCopies, allNumberCards, allOperatorCards);
+        return Objects.hash(super.hashCode(), numberHandSize, operatorHandSize, minObjectiveValue, maxObjectiveValue, numberCopies, minNumberValue, maxNumberValue, operatorCopies, allNumberCards, allOperatorCards, allObjectiveCards);
     }
 
     @Override
