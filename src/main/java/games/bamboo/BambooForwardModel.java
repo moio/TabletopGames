@@ -123,24 +123,11 @@ public class BambooForwardModel extends StandardForwardModel {
                     }
 
                     if (result == intObjective) {
-                        var toDiscard = numberHand.size() - numberCombination.size() - p.numberHandSize;
-
-                        if (toDiscard > 0) {
-                            var newHand = s.numberHands.get(playerId).copy();
-                            newHand.removeAll(numberCombination);
-                            actions.add(new ResolveAction(
-                                    numberCombination,
-                                    operatorCombination,
-                                    intObjective
-                            ));
-                        }
-                        else {
-                            actions.add(new ResolveAction(
-                                    numberCombination,
-                                    operatorCombination,
-                                    intObjective
-                            ));
-                        }
+                        actions.add(new ResolveAction(
+                                numberCombination,
+                                operatorCombination,
+                                intObjective
+                        ));
                     }
                 }
             }
