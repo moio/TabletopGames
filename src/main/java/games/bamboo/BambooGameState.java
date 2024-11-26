@@ -136,11 +136,7 @@ public class BambooGameState extends AbstractGameState {
             }
         }
 
-        copy.objectiveDrawPile.add(copy.objective);
-        copy.objective.clear();
         copy.objectiveDrawPile.shuffle(redeterminisationRnd);
-        copy.objective.add(copy.objectiveDrawPile.draw());
-
 
         return copy;
     }
