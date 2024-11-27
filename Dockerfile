@@ -20,6 +20,7 @@ FROM registry.suse.com/bci/openjdk:21
 # Copy over only the project (with generated JARs now)
 COPY --from=0 /TabletopGames/json /json
 COPY --from=0 /TabletopGames/data /data
+COPY --from=0 /TabletopGames/metrics /metrics
 COPY --from=0 /TabletopGames/target/dependency /jars
 COPY --from=0 /TabletopGames/target/ModernBoardGame*.jar /jars/ModernBoardGame.jar
 
