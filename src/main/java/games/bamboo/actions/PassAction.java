@@ -29,10 +29,14 @@ import java.util.Objects;
  * given your componentID.</p>
  */
 public class PassAction extends AbstractAction {
-    public final boolean shufflingOperators;
+    public final int numberCards;
+    public final int operatorCards;
+    public final boolean shufflingCards;
 
-    public PassAction(boolean shufflingOperators){
-        this.shufflingOperators = shufflingOperators;
+    public PassAction(int numberCards, int operatorCards){
+        this.numberCards = numberCards;
+        this.operatorCards = operatorCards;
+        this.shufflingCards = numberCards + numberCards == 0;
     }
 
     /**
@@ -47,29 +51,49 @@ public class PassAction extends AbstractAction {
         var p = (BambooParameters) s.getGameParameters();
         var playerId = s.getCurrentPlayer();
 
-        // draw _number_
-        s.numberHands.get(playerId).add(s.numberDrawPile.draw());
+        // shuffle cards
+        if (shufflingCards) {
+            var numberHand = s.numberHands.get(playerId);
+            int previousNumberHandSize = numberHand.getSize();
 
-        // optionally shuffle _operators_
-        if (shufflingOperators) {
-            var hand = s.operatorHands.get(playerId);
 
-            for (int i = 0; i < p.operatorHandSize; i++) {
-                s.operatorDrawPile.add(hand.draw());
+            for (int i = 0; i < previousNumberHandSize; i++) {
+                s.numberDrawPile.add(numberHand.draw());
+            }
+
+            s.numberDrawPile.shuffle(s.getRnd());
+
+            for (int i = 0; i < previousNumberHandSize; i++) {
+                numberHand.add(s.numberDrawPile.draw());
+            }
+
+            var operatorHand = s.operatorHands.get(playerId);
+            int previousOperatorHandSize = operatorHand.getSize();
+
+            for (int i = 0; i < previousOperatorHandSize; i++) {
+                s.operatorDrawPile.add(operatorHand.draw());
             }
 
             s.operatorDrawPile.shuffle(s.getRnd());
 
-            for (int i = 0; i < p.operatorHandSize; i++) {
-                hand.add(s.operatorDrawPile.draw());
+            for (int i = 0; i < previousOperatorHandSize; i++) {
+                operatorHand.add(s.operatorDrawPile.draw());
             }
         }
         else {
-            if (s.operatorDrawPile.getSize() > 0) {
-                // draw _operator_
-                s.operatorHands.get(playerId).add(s.operatorDrawPile.draw());
+            // draw numbers
+            for (int i = 0; i < numberCards; i++) {
+                if (s.numberDrawPile.getSize() > 0)
+                    s.numberHands.get(playerId).add(s.numberDrawPile.draw());
+            }
+
+            // draw operators
+            for (int i = 0; i < operatorCards; i++) {
+                if (s.operatorDrawPile.getSize() > 0)
+                    s.operatorHands.get(playerId).add(s.operatorDrawPile.draw());
             }
         }
+
 
         return true;
     }
@@ -91,18 +115,20 @@ public class PassAction extends AbstractAction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PassAction that = (PassAction) o;
-        return shufflingOperators == that.shufflingOperators;
+        return numberCards == that.numberCards && operatorCards == that.operatorCards && shufflingCards == that.shufflingCards;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(shufflingOperators);
+        return Objects.hash(shufflingCards, numberCards, operatorCards);
     }
 
     @Override
     public String toString() {
         return "PassAction{" +
-                "shufflingOperators=" + shufflingOperators +
+                "numberCards=" + numberCards +
+                ", operatorCards=" + operatorCards +
+                "shufflingOperators=" + shufflingCards +
                 '}';
     }
 

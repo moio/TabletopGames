@@ -130,8 +130,10 @@ public class BambooForwardModel extends StandardForwardModel {
             }
         }
 
-        actions.add(new PassAction(true));
-        actions.add(new PassAction(false));
+        actions.add(new PassAction(1, 1));
+        actions.add(new PassAction(2, 0));
+        actions.add(new PassAction(0, 2));
+        actions.add(new PassAction(0, 0));
 
         return actions;
     }
