@@ -62,6 +62,8 @@ public class BambooParameters extends TunableParameters {
         operatorCopies = (int) getParameterValue("operatorCopies");
 
         fillCardSets(this);
+
+        System.out.println(this.getJSONDescription());
     }
 
     private void fillCardSets(BambooParameters p) {
