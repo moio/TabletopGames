@@ -5,10 +5,6 @@ FROM registry.suse.com/bci/openjdk-devel:21
 ADD . /TabletopGames
 WORKDIR /TabletopGames
 
-# Start from scratch
-RUN mvn clean
-# Compile TAG
-RUN mvn compile
 # Create JARs TAG
 RUN mvn package -Dassembly.skipAssembly=true
 # Download dependencies
